@@ -1,0 +1,100 @@
+*{
+    margin: 0;
+    padding: 0 ;
+    box-sizing: border-box;
+}
+
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e6f2ff, #ffffff);
+}
+
+.container {
+    max-width: 420px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.logo {
+    width: 300px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #0A8F3C;
+}
+
+label {
+    font-size: 18px;
+    display: block;
+    margin-top: 20px;
+    color: #0B6B2E;
+}
+
+select {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 25px;
+    font-size: 20px;
+    background-color: #0A8F3C;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0B6B2E;
+}
+
+.rodape {
+    margin-top: 40px;
+    padding: 20px 10px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.rodape-img {
+    max-width: 100%;
+    width: 380px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px auto;
+}
+
+.rodape p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.4;
+}
+
+
+
+#resultado {
+    margin-top: 30px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.ok {
+    color: #1e8e3e;
+}
+
+.erro {
+    color: #d93025;
+}

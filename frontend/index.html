@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    
+    <title>Consulta de Medicamentos</title>
+</head>
+<body>
+    <div class="container">
+        <img src="logoHospital.png" alt="Logo do Hospital" class="logo">
+        
+        <h1>Disponibilide de Medicamentos <br> 
+        Da <br> Farmácia Ambulátorial</h1>
+
+        <label for="medicamentos">Selecione o Medicamento:</label>
+
+        <select  id="medicamento">
+            <option value="">-- Selecione o Medicamento --</option>
+        </select>
+
+        <button onclick="consultar()">Consultar</button> 
+
+        <div id="resultado"></div>
+
+       
+        
+
+    </div> 
+
+     <script src="script.js"></script>
+
+     <footer class="rodape">
+    <img src="banner_brasao_saude.png" 
+         alt="Secretaria da Saúde do Ceará" 
+         class="rodape-img">
+
+    <p>
+        Todos os direitos reservados &copy; <br>
+        Desenvolvido por Caio Fernandes
+    </p>
+</footer>
+
+</body>
+</html>
