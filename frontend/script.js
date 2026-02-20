@@ -2,12 +2,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const select = document.getElementById("medicamento");
     const resultado = document.getElementById("resultado");
 
+    const API_BASE = "https://backend-hospital-hs2d.onrender.com";
+
     // Placeholder fixo
     select.innerHTML = '<option value="">— Selecione o medicamento —</option>';
 
-    // Carregar todos os medicamentos
-    fetch("https://backend-hospital-hs2d.onrender.com/medicamentos")
-        .then(response => response.json())
+    // 🔹 Carregar todos os medicamentos
+    fetch(`${API_BASE}/medicamentos`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erro ao carregar lista");
+            }
+            return response.json();
+        })
         .then(dados => {
             dados.forEach(med => {
                 const option = document.createElement("option");
@@ -20,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             select.innerHTML = '<option>Erro ao carregar medicamentos</option>';
         });
 
-    // Consultar disponibilidade
+    // 🔹 Consultar disponibilidade
     window.consultar = function () {
         const nome = select.value;
 
@@ -30,11 +37,20 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        fetch(`https://backend-hospital-hs2d.onrender.com/medicamentos/${nome}`)
+        fetch(`${API_BASE}/medicamentos/${encodeURIComponent(nome)}`)
+            .then(response => {
+                if (response.status === 404) {
+                    throw new Error("Medicamento não encontrado");
+                }
 
-            .then(response => response.json())
+                if (!response.ok) {
+                    throw new Error("Erro interno do servidor");
+                }
+
+                return response.json();
+            })
             .then(dado => {
-                if (dado.disponivel) {
+                if (dado.disponivel === true) {
                     resultado.textContent = "✅ MEDICAMENTO DISPONÍVEL";
                     resultado.className = "ok";
                 } else {
@@ -42,8 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     resultado.className = "erro";
                 }
             })
-            .catch(() => {
-                resultado.textContent = "Erro ao consultar.";
+            .catch((erro) => {
+                if (erro.message === "Medicamento não encontrado") {
+                    resultado.textContent = "Medicamento não encontrado.";
+                } else {
+                    resultado.textContent = "Erro ao consultar servidor. Aguarde e tente novamente.";
+                }
                 resultado.className = "erro";
             });
     };
