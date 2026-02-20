@@ -1,17 +1,36 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import csv
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-def carregar_medicamentos():
+def normalizar_disponibilidade(valor):
+    if not valor:
+        return False
+    return valor.strip().lower() == "sim"
+
+def ler_medicamentos():
     medicamentos = []
-    with open("medicamentos.csv", newline="", encoding="utf-8") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            medicamentos.append(row)
-    return medicamentos
+
+    try:
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        caminho_csv = os.path.join(BASE_DIR, 'medicamentos.csv')
+
+        with open(caminho_csv, newline='', encoding='utf-8-sig') as arquivo:
+            leitor = csv.DictReader(arquivo, delimiter=';')
+
+            for linha in leitor:
+                medicamentos.append({
+                    "nome": linha.get("nome"),
+                    "disponivel": normalizar_disponibilidade(linha.get("disponivel"))
+                })
+
+        return medicamentos
+
+    except Exception as e:
+        return {"erro": str(e)}
 
 @app.route("/")
 def home():
@@ -19,14 +38,19 @@ def home():
 
 @app.route("/medicamentos", methods=["GET"])
 def listar_medicamentos():
-    return jsonify(carregar_medicamentos())
+    return jsonify(ler_medicamentos())
 
 @app.route("/medicamentos/<nome>", methods=["GET"])
 def consultar_medicamento(nome):
-    medicamentos = carregar_medicamentos()
+    medicamentos = ler_medicamentos()
+
+    if isinstance(medicamentos, dict) and "erro" in medicamentos:
+        return jsonify(medicamentos), 500
+
     for med in medicamentos:
-        if med["nome"].lower() == nome.lower():
+        if med.get("nome") and med["nome"].lower() == nome.lower():
             return jsonify(med)
+
     return jsonify({"erro": "Medicamento não encontrado"}), 404
 
 if __name__ == "__main__":

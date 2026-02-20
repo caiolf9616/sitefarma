@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     select.innerHTML = '<option value="">— Selecione o medicamento —</option>';
 
     // Carregar todos os medicamentos
-    fetch("http://127.0.0.1:5000/medicamentos")
+    fetch("https://backend-hospital-hs2d.onrender.com/medicamentos")
         .then(response => response.json())
         .then(dados => {
             dados.forEach(med => {
@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        fetch(`http://127.0.0.1:5000/medicamentos/${nome}`)
+        fetch(`https://backend-hospital-hs2d.onrender.com/medicamentos/${nome}`)
+
             .then(response => response.json())
             .then(dado => {
                 if (dado.disponivel) {
