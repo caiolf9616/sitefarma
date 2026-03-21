@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Backend FastAPI (conecta ao Supabase)
+  backend:
+    build: ./backend
+    container_name: sitefarma-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+    restart: unless-stopped
+    networks:
+      - sitefarma-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/medications/')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Frontend React/Vite
+  frontend:
+    build: ./frontend
+    container_name: sitefarma-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - sitefarma-network
+
+networks:
+  sitefarma-network:
+    driver: bridge
